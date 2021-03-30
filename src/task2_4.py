@@ -6,6 +6,6 @@ naccomodates_bestdeal = airbnb_df\
     .take(1)[0]\
     .__getitem__(0)
 
-filename = '../out/out_2_3.txt'
+filename = '../out/out_2_4.txt'
 with open(filename, 'w') as out:
     out.write(str(naccomodates_bestdeal))
