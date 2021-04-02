@@ -27,7 +27,7 @@ def download_file(url, file_name, local_path):
             Returns:
                     local_file (str): Relative path to local file
     '''
-    if not path.exists('../data/groceries.csv'):
+    if not path.exists(local_path + file_name):
         res = requests.get(url, allow_redirects=True)
         assert res.status_code == 200, "Failed to download file: {}".format(res.text)
         

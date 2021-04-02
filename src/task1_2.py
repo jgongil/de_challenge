@@ -21,8 +21,6 @@ with open(filename, 'w') as out:
     for item in unique_products.collect():
         out.write(str(item) + '\n')
         
-#unique_products.take(5)
-
 ## Task 2 - Part b: total count of products
 
 total_items = sum(groceries_summary.values().collect())
