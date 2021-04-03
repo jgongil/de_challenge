@@ -1,3 +1,4 @@
 *.pdf
 *.ipynb
 .ipynb_checkpoints
+!de_challenge_on_databricks.ipynb

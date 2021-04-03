@@ -1,17 +1,27 @@
+# PART 3: Applied ML
+
 ## Task 2: MLlib
 
 from pyspark.ml.classification import LogisticRegression
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.feature import StringIndexer, OneHotEncoder, IndexToString
-from pyspark import SparkContext
 from pyspark.sql import SparkSession
+import os
 
-#! curl -L "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data" -o /tmp/iris.csv
 
 # Instanciates SparkSession
 spark = SparkSession.builder.getOrCreate()
-local_file = "../data/iris.csv"
+
+# all output files are placed in the same dir
+output_path = "dbfs:/tmp/out"
+dbutils.fs.mkdirs(output_path)
+
+# uploads downloaded file into dbfs
+local_file = "file:/tmp/iris.csv"
+dbfs_file = "dbfs:/tmp/input_data/iris.csv"
+dbutils.fs.cp(local_file,dbfs_file)
+
 col_names = ["sepal_length", "sepal_width", "petal_length", "petal_width", "class"]
 
 schema = """`sepal_length` DOUBLE,
@@ -21,7 +31,7 @@ schema = """`sepal_length` DOUBLE,
             `class` STRING
         """
 
-df = spark.read.csv(local_file,schema=schema)
+df = spark.read.csv(dbfs_file,schema=schema)
     
 categoricalCols = ["class"]
 
@@ -53,7 +63,7 @@ test_df = spark.createDataFrame([
 # Apply the pipeline model to the test dataset.
 pred_df = pipelineModel.transform(test_df)
 
-filename = '../out/out_3_2.txt'
+filename = os.path.join(output_path,"out_3_2.txt")
 pred_df.select("class").coalesce(1)\
     .write\
     .mode ("overwrite")\

@@ -1,10 +1,10 @@
+# PART 2: Spark Dataframe API
 
-#%sh pip install "apache-airflow[databricks]"
+## Task 5: Apache Airflow
 
 import airflow
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
-#from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator, DatabricksRunNowOperator
 from datetime import datetime, timedelta
 
 # The next section sets some default arguments applied to each task in the DAG

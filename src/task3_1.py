@@ -1,10 +1,13 @@
 # PART 3: Applied ML
+
 ## Task 1 sklearn
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
-df = pd.read_csv("../data/iris.csv",\
+local_file = "file:/tmp/iris.csv"
+df = pd.read_csv(local_file,\
     names = ["sepal_length", "sepal_width", "petal_length", "petal_width", "class"])
 
 # Separate features from class.

@@ -2,6 +2,18 @@
 
 ## Task 2 - Part a: unique list of products
 
+from pyspark.sql.types import StructType,StructField, StringType, IntegerType
+
+def file_exists(path):
+  try:
+    dbutils.fs.ls(path)
+    return True
+  except Exception as e:
+    if 'java.io.FileNotFoundException' in str(e):
+      return False
+    else:
+      raise
+      
 def create_pair(item): 
     return (item, 1) 
 
@@ -14,16 +26,27 @@ groceries_summary = groceries_df.rdd\
 
 unique_products = groceries_summary.keys()
 
-#uniqueProducts.coalesce(1).saveAsTextFile('./out_1_2a')
 
-filename = '../out/out_1_2a.txt'
-with open(filename, 'w') as out:
-    for item in unique_products.collect():
-        out.write(str(item) + '\n')
-        
-## Task 2 - Part b: total count of products
+# all output files are placed in the same dir
+output_path = "dbfs:/tmp/out"
+dbutils.fs.mkdirs(output_path)
 
+# list of unique products
+filename = os.path.join(output_path,"out_1_2a.txt")
+if file_exists is not True:
+  unique_products.coalesce(1).saveAsTextFile(filename)
+
+# count of total items
+filename = os.path.join(output_path,"out_1_2b.txt")
 total_items = sum(groceries_summary.values().collect())
-filename = '../out/out_1_2b.txt'
-with open(filename, 'w') as out:
-    out.write('Count: \n' + str(total_items))
+
+# creates spark dataframe with column name "count" and writes it to file
+schema = StructType([StructField("count",IntegerType(),True)])  
+data = [(total_items,)]
+total_items_df = spark.createDataFrame(data=data, schema=schema)
+total_items_df.select("count").coalesce(1)\
+    .write\
+    .mode ("overwrite")\
+    .format("csv")\
+    .option("header", "true")\
+    .save(filename)
