@@ -33,7 +33,7 @@ dbutils.fs.mkdirs(output_path)
 
 # list of unique products
 filename = os.path.join(output_path,"out_1_2a.txt")
-if file_exists is not True:
+if file_exists(filename) is not True:
   unique_products.coalesce(1).saveAsTextFile(filename)
 
 # count of total items
