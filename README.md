@@ -21,6 +21,9 @@ The code in the repository presents an approach or solution to the different dat
 
 ## Environment
 - Apache Spark
-- All code has been developed and tested using 
+- All code has been developed and tested using [Databricks CE](https://community.cloud.databricks.com) and
 [Jupyter Notebook Stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html) on a [Docker container](https://hub.docker.com/r/jupyter/all-spark-notebook)
-- ! should you need to run it on Databricks, make sure you amend references to the local or dbfs filesystems
+
+## Instructions
+The code for every part is independent of the rest and can be run separately, however the tasks within every part must be run in order.
+A notebook `de_challenge_on_databricks.ipynb` with all the code is also provided.
